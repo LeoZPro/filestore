@@ -99,7 +99,7 @@ public class FilesResource {
             value.put("parent", node);
             value.put("path", service.path(id));
             value.put("nodes", service.list(id));
-            value.put("nb_nodes", service.list(id).size());
+            value.put("nb_nodes", service.list("root").size());
             content.setContent(value);
             return Response.ok(content).build();
         } else {

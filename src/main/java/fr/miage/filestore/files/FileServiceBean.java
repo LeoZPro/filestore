@@ -256,6 +256,20 @@ public class FileServiceBean implements FileService {
     }
 
     @Override
+    public Long countAllNode(){
+        Query query = em.createQuery("SELECT COUNT(n) FROM Node n WHERE n.id NOT LIKE 'root'");
+        Long result = (Long) query.getSingleResult();
+        return result;
+    }
+
+    @Override
+    public Long countAllDownload(){
+        Query query = em.createQuery("SELECT SUM(n.nb_download) FROM Node n WHERE n.id NOT LIKE 'root'");
+        Long result = (Long) query.getSingleResult();
+        return result;
+    }
+
+    @Override
     public void updateFileStatistique(String id) throws NodeNotFoundException {
         LOGGER.log(Level.FINE, "Updating file stats. ");
         Query query = em.createQuery("UPDATE Node n SET n.nb_download = n.nb_download + 1 WHERE n.id = '"+id+"'");

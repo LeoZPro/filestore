@@ -67,7 +67,7 @@
                         <tbody>
                         <#if !content.parent.isRoot()>
                             <tr>
-                                <td colspan="3">
+                                <td colspan="4">
                                     <i class="fa fa-folder mr-2"></i>
                                     <a href="${content.ctx}/api/statistiques/${content.parent.parent}">..</a>
                                 </td>
@@ -103,6 +103,12 @@
                         </tbody>
                     </table>
                 </#if>
+                <div>
+                    Total de fichier uploadé sur ce drive = ${content.nb_total_nodes}
+                </div>
+                <div>
+                    Total de fichier downloadé sur ce drive = ${content.nb_total_download}
+                </div>
             </div>
         </div>
     </section>

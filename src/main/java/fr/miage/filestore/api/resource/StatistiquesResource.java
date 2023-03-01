@@ -52,7 +52,9 @@ public class StatistiquesResource {
         value.put("parent", node);
         value.put("status", this.buildStatus());
         value.put("nodes", service.list(id));
-        value.put("nb_nodes", service.list(id).size());
+        value.put("nb_nodes", service.list("root").size());
+        value.put("nb_total_nodes", service.countAllNode());
+        value.put("nb_total_download", service.countAllDownload());
         content.setContent(value);
         return Response.ok(content).build();
     }

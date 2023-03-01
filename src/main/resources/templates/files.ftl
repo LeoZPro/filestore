@@ -76,9 +76,9 @@
             <div class="row">
                 <div class="col-12">
                     <#if content.nb_nodes < 1>
-                    <div style="background-color: white;border: 1px solid black;padding: 20px;text-align: center;margin: 10px;">
-                        <b>Vous n'avez rien uploadé!</b>
-                    </div>
+                        <div style="background-color: white;border: 1px solid black;padding: 20px;text-align: center;margin: 10px;">
+                            <b>Vous n'avez aucun document!</b>
+                        </div>
                     <#else>
                         <table class="table table-striped w-100" id="filestable">
                             <thead>

@@ -29,4 +29,8 @@ public interface FileService {
     void updateFileStatistique(String id) throws NodeNotFoundException;
 
     void updateFolderStatistique(String id) throws NodeNotFoundException;
+
+    Long countAllNode() throws NodeNotFoundException;
+
+    Long countAllDownload() throws NodeNotFoundException;
 }

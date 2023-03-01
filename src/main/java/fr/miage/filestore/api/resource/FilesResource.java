@@ -91,6 +91,7 @@ public class FilesResource {
         LOGGER.log(Level.INFO, "GET /api/files/" + id + "/content (html)");
         Node node = service.get(id);
         if (node.getType().equals(Node.Type.TREE)) {
+            service.updateFolderStatistique(id);
             TemplateContent<Map<String, Object>> content = new TemplateContent<>();
             Map<String, Object> value = new HashMap<>();
             value.put("ctx", config.instance().ctx());
@@ -98,15 +99,19 @@ public class FilesResource {
             value.put("parent", node);
             value.put("path", service.path(id));
             value.put("nodes", service.list(id));
+            value.put("nb_nodes", service.list(id).size());
             content.setContent(value);
             return Response.ok(content).build();
         } else {
+            // Ici besoin d'incrémenter le nombre de download du fichier / d'entrée dans le dossier
+            service.updateFileStatistique(id);
             return Response.ok(service.getContent(id))
                     .header("Content-Type", node.getMimetype())
                     .header("Content-Length", node.getSize())
                     .header("Content-Disposition", ((download) ? "attachment; " : "") + "filename=" + node.getName()).build();
         }
     }
+
 
     @POST
     @Path("{id}")

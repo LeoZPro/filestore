@@ -13,8 +13,10 @@ import fr.miage.filestore.metrics.MetricsService;
 
 import javax.ejb.EJB;
 import javax.inject.Inject;
+import javax.validation.constraints.Null;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -31,20 +33,26 @@ public class StatistiquesResource {
     private FileStoreConfig config;
     @EJB
     MetricsService metrics;
-
+    @EJB
+    private FileService service;
     @EJB
     private AuthenticationService authenticationService;
 
     @GET
+    @Path("{id}")
     @Template(name = "statistiques")
     @Produces(MediaType.TEXT_HTML)
-    public Response getStatistiquesHtml() throws NodeNotFoundException {
+    public Response getStatistiquesHtml(@PathParam("id") String id) throws NodeNotFoundException {
         LOGGER.log(Level.INFO, "GET /api/statistiques (html)");
+        Node node = service.get(id);
         TemplateContent<Map<String, Object>> content = new TemplateContent<>();
         Map<String, Object> value = new HashMap<>();
         value.put("ctx", config.instance().ctx());
         value.put("profile", authenticationService.getConnectedProfile());
+        value.put("parent", node);
         value.put("status", this.buildStatus());
+        value.put("nodes", service.list(id));
+        value.put("nb_nodes", service.list(id).size());
         content.setContent(value);
         return Response.ok(content).build();
     }
@@ -59,7 +67,4 @@ public class StatistiquesResource {
         status.setMetrics(metrics.listMetrics());
         return status;
     }
-
-
-
 }

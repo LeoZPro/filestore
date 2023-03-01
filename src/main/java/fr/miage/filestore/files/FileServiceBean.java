@@ -255,6 +255,23 @@ public class FileServiceBean implements FileService {
         }
     }
 
+    @Override
+    public void updateFileStatistique(String id) throws NodeNotFoundException {
+        LOGGER.log(Level.FINE, "Updating file stats. ");
+        Query query = em.createQuery("UPDATE Node n SET n.nb_download = n.nb_download + 1 WHERE n.id = '"+id+"'");
+        query.executeUpdate();
+    }
+
+    @Override
+    public void updateFolderStatistique(String id) throws NodeNotFoundException {
+        LOGGER.log(Level.FINE, "Updating folder stats. ");
+        System.out.println("There is my update");
+        Query query = em.createQuery("UPDATE Node n SET n.nb_clic_folder = n.nb_clic_folder + 1 WHERE n.id = '"+id+"'");
+        System.out.println(query);
+        query.executeUpdate();
+        System.out.println("Query executed");
+    }
+
     //INTERNAL OPERATIONS
 
     private Node loadNode(String id) throws NodeNotFoundException {

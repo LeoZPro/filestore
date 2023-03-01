@@ -75,76 +75,82 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <table class="table table-striped w-100" id="filestable">
-                        <thead>
-                        <tr>
-                            <th data-priority="1">Nom</th>
-                            <th>Taille</th>
-                            <th>Type</th>
-                            <th class="sort-numeric">Date de création</th>
-                            <th class="sort-numeric">Date de modification</th>
-                            <th>Action</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <#if !content.parent.isRoot()>
-                        <tr>
-                            <td>
-                                <i class="fa fa-folder mr-2"></i>
-                                <a href="${content.ctx}/api/files/${content.parent.parent}/content">..</a>
-                            </td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        </#if>
-                        <#list content.nodes as node>
-                        <tr>
-                            <td>
-                                <i class="fa ${helper.mimetypeToIcon(node.mimetype)} mr-2"></i>
-                                <#if node.isFolder() >
-                                    <a href="${content.ctx}/api/files/${node.id}/content">${node.name}</a>
-                                <#else>
-                                    <a href="${content.ctx}/api/files/${node.id}/content?download=false">${node.name}</a>
-                                </#if>
-                            </td>
-                            <#if node.isFolder() >
-                                <td>${node.size} elements</td>
-                            <#else>
-                                <td>${helper.sizeToBytes(node.size, false)}</td>
+                    <#if content.nb_nodes < 1>
+                    <div style="background-color: white;border: 1px solid black;padding: 20px;text-align: center;margin: 10px;">
+                        <b>Vous n'avez rien uploadé!</b>
+                    </div>
+                    <#else>
+                        <table class="table table-striped w-100" id="filestable">
+                            <thead>
+                            <tr>
+                                <th data-priority="1">Nom</th>
+                                <th>Taille</th>
+                                <th>Type</th>
+                                <th class="sort-numeric">Date de création</th>
+                                <th class="sort-numeric">Date de modification</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <#if !content.parent.isRoot()>
+                                <tr>
+                                    <td>
+                                        <i class="fa fa-folder mr-2"></i>
+                                        <a href="${content.ctx}/api/files/${content.parent.parent}/content">..</a>
+                                    </td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                             </#if>
-                            <td>${node.mimetype}</td>
-                            <td>${node.creation?number_to_datetime}</td>
-                            <td>${node.modification?number_to_datetime}</td>
-                            <td>
-                                <#if !node.isFolder() >
-                                    <a href="${content.ctx}/api/files/${node.id}/content?download=true" class="mr-3"><i class="fas fa-download"></i></a>
-                                    <a href="${content.ctx}/api/files/${node.id}/content" class="mr-3"><i class="fas fa-eye"></i></a>
-                                </#if>
-                                <#if node.getMimetype() != "application/zip" >
-                                    <a href="#" onclick="submitPostLink('${node.id}')"><i class="fas fa-folder-open"></i></a>
-                                    <form action="${content.ctx}/api/action/zip/${node.id}" enctype="multipart/form-data" name="${node.id}" method="post">
-                                        <input type="hidden" name="${node.id}" value="this is my POST data">
-                                    </form>
-                                <#else>
-                                    <a href="#" onclick="submitPostLink('${node.id}')"><i class="fas fa-folder"></i></a>
-                                    <form action="${content.ctx}/api/action/zip/${node.id}" enctype="multipart/form-data" name="${node.id}" method="post">
-                                        <input type="hidden" name="${node.id}" value="this is my POST data">
-                                    </form>
-                                </#if>
-                                <script language=javascript>
-                                    function submitPostLink(nodeId)
-                                    {
-                                        document.forms[nodeId].submit();
-                                    }
-                                </script>
-                            </td>
-                        </tr>
-                        </#list>
-                        </tbody>
-                    </table>
+                            <#list content.nodes as node>
+                                <tr>
+                                    <td>
+                                        <i class="fa ${helper.mimetypeToIcon(node.mimetype)} mr-2"></i>
+                                        <#if node.isFolder() >
+                                            <a href="${content.ctx}/api/files/${node.id}/content">${node.name}</a>
+                                        <#else>
+                                            <a href="${content.ctx}/api/files/${node.id}/content?download=false">${node.name}</a>
+                                        </#if>
+                                    </td>
+                                    <#if node.isFolder() >
+                                        <td>${node.size} elements</td>
+                                    <#else>
+                                        <td>${helper.sizeToBytes(node.size, false)}</td>
+                                    </#if>
+                                    <td>${node.mimetype}</td>
+                                    <td>${node.creation?number_to_datetime}</td>
+                                    <td>${node.modification?number_to_datetime}</td>
+                                    <td>
+                                        <#if !node.isFolder() >
+                                            <a href="${content.ctx}/api/files/${node.id}/content?download=true" class="mr-3"><i class="fas fa-download"></i></a>
+                                            <a href="${content.ctx}/api/files/${node.id}/content" class="mr-3"><i class="fas fa-eye"></i></a>
+                                        </#if>
+                                        <#if node.getMimetype() != "application/zip" >
+                                            <a href="#" onclick="submitPostLink('${node.id}')"><i class="fas fa-folder-open"></i></a>
+                                            <form action="${content.ctx}/api/action/zip/${node.id}" enctype="multipart/form-data" name="${node.id}" method="post">
+                                                <input type="hidden" name="${node.id}" value="this is my POST data">
+                                            </form>
+                                        <#else>
+                                            <a href="#" onclick="submitPostLink('${node.id}')"><i class="fas fa-folder"></i></a>
+                                            <form action="${content.ctx}/api/action/zip/${node.id}" enctype="multipart/form-data" name="${node.id}" method="post">
+                                                <input type="hidden" name="${node.id}" value="this is my POST data">
+                                            </form>
+                                        </#if>
+                                        <script language=javascript>
+                                            function submitPostLink(nodeId)
+                                            {
+                                                document.forms[nodeId].submit();
+                                            }
+                                        </script>
+                                    </td>
+                                </tr>
+                            </#list>
+                            </tbody>
+                        </table>
+                    </#if>
                 </div>
             </div>
         </div>

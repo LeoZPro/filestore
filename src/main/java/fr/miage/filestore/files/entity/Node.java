@@ -33,6 +33,25 @@ public class Node implements Comparable<Node>, Serializable {
     private long size;
     private long creation;
     private long modification;
+    private long nb_download;
+    private long nb_clic_folder;
+
+    public long getNb_clic_folder() {
+        return nb_clic_folder;
+    }
+
+    public void setNb_clic_folder(long nb_clic_folder) {
+        this.nb_clic_folder = nb_clic_folder;
+    }
+
+    public long getNb_download() {
+        return nb_download;
+    }
+
+    public void setNb_download(long nb_download) {
+        this.nb_download = nb_download;
+    }
+
     @JsonbTransient
     private String contentId;
     @Transient

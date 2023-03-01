@@ -50,17 +50,59 @@
     <section class="section-container">
         <div class="content-wrapper">
             <div>
-                <table class="table table-striped w-100">
-                    <thead>
-                    <tr>
-                        <th data-priority="1">Nom</th>
-                        <th>Nb downloads</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                </table>
+                <#if content.nb_nodes < 1>
+                    <div style="background-color: white;border: 1px solid black;padding: 20px;text-align: center;margin: 10px;">
+                        <b>Malheureusement, vous n'avez aucun fichier n'y aucun dossier! <br> N'hésitez pas à ajouter des documents <a href="${content.ctx}/api/files/root/content">ici</a>!</b>
+                    </div>
+                <#else>
+                    <table class="table table-striped w-100">
+                        <thead>
+                        <tr>
+                            <th data-priority="1">Nom</th>
+                            <th>Ajouté le</th>
+                            <th>Nb downloads</th>
+                            <th>Nb clic/folder</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <#if !content.parent.isRoot()>
+                            <tr>
+                                <td colspan="3">
+                                    <i class="fa fa-folder mr-2"></i>
+                                    <a href="${content.ctx}/api/statistiques/${content.parent.parent}">..</a>
+                                </td>
+                            </tr>
+                        </#if>
+                        <#list content.nodes as node>
+                            <tr>
+                                <td>
+                                    <i class="fa ${helper.mimetypeToIcon(node.mimetype)} mr-2"></i>
+                                    <#if node.isFolder() >
+                                        <a href="${content.ctx}/api/statistiques/${node.id}">${node.name}</a>
+                                    <#else>
+                                        ${node.name}
+                                    </#if>
+                                </td>
+                                <td>${node.creation?number_to_datetime}</td>
+                                <td>
+                                    <#if node.isFolder() >
+                                        -
+                                    <#else>
+                                        ${node.nb_download}
+                                    </#if>
+                                </td>
+                                <td>
+                                    <#if !node.isFolder() >
+                                        -
+                                    <#else>
+                                        ${node.nb_clic_folder}
+                                    </#if>
+                                </td>
+                            </tr>
+                        </#list>
+                        </tbody>
+                    </table>
+                </#if>
             </div>
         </div>
     </section>

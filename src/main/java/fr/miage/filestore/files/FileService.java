@@ -26,4 +26,7 @@ public interface FileService {
 
     List<Node> search(String query) throws FileServiceException;
 
+    void updateFileStatistique(String id) throws NodeNotFoundException;
+
+    void updateFolderStatistique(String id) throws NodeNotFoundException;
 }

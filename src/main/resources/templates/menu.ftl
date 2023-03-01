@@ -44,7 +44,7 @@
                 </li>
                 <!-- Nouvelle entrée -->
                 <li class="${(section == 'statistiques')?then('active','')}">
-                    <a href="${content.ctx}/api/statistiques" title="Mes statistiques">
+                    <a href="${content.ctx}/api/statistiques/root" title="Mes statistiques">
                         <em class="icon-chart"></em>
                         <span data-localize="sidebar.nav.SINGLEVIEW">Mes statistiques</span>
                     </a>

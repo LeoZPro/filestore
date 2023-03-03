@@ -4,6 +4,7 @@ import fr.miage.filestore.files.entity.Node;
 import fr.miage.filestore.files.exception.*;
 
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.List;
 
 public interface FileService {
@@ -33,4 +34,8 @@ public interface FileService {
     Long countAllNode() throws NodeNotFoundException;
 
     Long countAllDownload() throws NodeNotFoundException;
+    Long countAllFiles() throws NodeNotFoundException;
+    Long countAllFolders() throws NodeNotFoundException;
+
+    HashMap<String, Long> countAllMimetype() throws NodeNotFoundException;
 }

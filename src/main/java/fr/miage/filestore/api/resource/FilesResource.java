@@ -91,7 +91,7 @@ public class FilesResource {
         LOGGER.log(Level.INFO, "GET /api/files/" + id + "/content (html)");
         Node node = service.get(id);
         if (node.getType().equals(Node.Type.TREE)) {
-            service.updateFolderStatistique(id);
+            if(id != "root") service.updateFolderStatistique(id);
             TemplateContent<Map<String, Object>> content = new TemplateContent<>();
             Map<String, Object> value = new HashMap<>();
             value.put("ctx", config.instance().ctx());
@@ -103,7 +103,6 @@ public class FilesResource {
             content.setContent(value);
             return Response.ok(content).build();
         } else {
-            // Ici besoin d'incrémenter le nombre de download du fichier / d'entrée dans le dossier
             service.updateFileStatistique(id);
             return Response.ok(service.getContent(id))
                     .header("Content-Type", node.getMimetype())

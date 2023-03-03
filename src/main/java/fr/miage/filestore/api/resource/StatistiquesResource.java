@@ -55,6 +55,9 @@ public class StatistiquesResource {
         value.put("nb_nodes", service.list("root").size());
         value.put("nb_total_nodes", service.countAllNode());
         value.put("nb_total_download", service.countAllDownload());
+        value.put("nb_total_files", service.countAllFiles());
+        value.put("nb_total_folders", service.countAllFolders() - 1);
+        value.put("mimeTypeCount", service.countAllMimetype());
         content.setContent(value);
         return Response.ok(content).build();
     }

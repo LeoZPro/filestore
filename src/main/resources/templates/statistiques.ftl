@@ -18,7 +18,16 @@
     <link rel="stylesheet" href="${content.ctx}/css/bootstrap.css" id="bscss">
     <link rel="stylesheet" href="${content.ctx}/css/app.css" id="maincss">
 </head>
-
+<style>
+    .stat-card{
+        font-size:25px;display: flex;align-items: center;justify-content: center;border: 1px dashed black;width: 40%;margin: auto;padding: 10px;
+    }
+    .stat-card:hover{
+        background-color: lightgray;
+        cursor: pointer;
+        transition: 0.4s ease-in-out all;
+    }
+</style>
 <body>
 <div class="wrapper">
     <header class="topnavbar-wrapper">
@@ -103,11 +112,47 @@
                         </tbody>
                     </table>
                 </#if>
-                <div>
-                    Total de fichier uploadé sur ce drive = ${content.nb_total_nodes}
+                <div style="display: flex; align-items: center; justify-content: center; margin:5px">
+                    <div class="stat-card">
+                        <div style="margin-right: 20px; text-align: center; font-weight: bold;">
+                            Total de fichier/dossier uploadé ${content.nb_total_nodes}
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div style="margin-right: 20px; text-align: center; font-weight: bold;">
+                            Total de fichier téléchargé ${content.nb_total_download}
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: center; margin:5px">
+                    <div class="stat-card">
+                        <div style="margin-right: 20px; text-align: center; font-weight: bold;">
+                            Nombre total de fichier ${content.nb_total_files}
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div style="margin-right: 20px; text-align: center; font-weight: bold;">
+                            Nombre total de dossier ${content.nb_total_folders}
+                        </div>
+                    </div>
                 </div>
                 <div>
-                    Total de fichier downloadé sur ce drive = ${content.nb_total_download}
+                    <table class="table table-striped w-100">
+                        <thead>
+                        <tr>
+                            <th>Mimetype</th>
+                            <th>Nombre</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <#list content.mimeTypeCount?keys as mimetype>
+                                <tr>
+                                    <td>${mimetype}</td>
+                                    <td>${content.mimeTypeCount[mimetype]}</td>
+                                </tr>
+                            </#list>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

@@ -254,6 +254,30 @@ public class FileServiceBean implements FileService {
             throw new FileServiceException("Error while searching files", e);
         }
     }
+    @Override
+    public HashMap<String, Long> countAllMimetype(){
+        HashMap<String, Long> mimetypeCounts = new HashMap<>();
+        Query query = em.createQuery("SELECT count(n.id), n.mimetype FROM Node n GROUP BY n.mimetype ORDER BY count(n.id) DESC");
+        List<Object[]> resultList = (List<Object[]>) query.getResultList();
+        for (Object[] result : resultList) {
+            Long count = (Long) result[0];
+            String mimetype = (String) result[1];
+            mimetypeCounts.put(mimetype, count);
+        }
+        return mimetypeCounts;
+    }
+    @Override
+    public Long countAllFolders(){
+        Query query = em.createQuery("SELECT COUNT(n) FROM Node n WHERE n.type = 'TREE' AND n.id NOT LIKE 'ROOT'");
+        Long result = (Long) query.getSingleResult();
+        return result;
+    }
+    @Override
+    public Long countAllFiles(){
+        Query query = em.createQuery("SELECT COUNT(n) FROM Node n WHERE n.type = 'BLOB'");
+        Long result = (Long) query.getSingleResult();
+        return result;
+    }
 
     @Override
     public Long countAllNode(){
@@ -266,24 +290,24 @@ public class FileServiceBean implements FileService {
     public Long countAllDownload(){
         Query query = em.createQuery("SELECT SUM(n.nb_download) FROM Node n WHERE n.id NOT LIKE 'root'");
         Long result = (Long) query.getSingleResult();
+        if(result == null) result = Long.valueOf(0);
         return result;
     }
 
     @Override
     public void updateFileStatistique(String id) throws NodeNotFoundException {
         LOGGER.log(Level.FINE, "Updating file stats. ");
-        Query query = em.createQuery("UPDATE Node n SET n.nb_download = n.nb_download + 1 WHERE n.id = '"+id+"'");
-        query.executeUpdate();
+        Node node = loadNode(id);
+        node.setNb_download(node.getNb_download() + 1);
+        em.persist(node);
     }
 
     @Override
     public void updateFolderStatistique(String id) throws NodeNotFoundException {
         LOGGER.log(Level.FINE, "Updating folder stats. ");
-        System.out.println("There is my update");
-        Query query = em.createQuery("UPDATE Node n SET n.nb_clic_folder = n.nb_clic_folder + 1 WHERE n.id = '"+id+"'");
-        System.out.println(query);
-        query.executeUpdate();
-        System.out.println("Query executed");
+        Node node = loadNode(id);
+        node.setNb_clic_folder(node.getNb_clic_folder()+1);
+        em.persist(node);
     }
 
     //INTERNAL OPERATIONS
